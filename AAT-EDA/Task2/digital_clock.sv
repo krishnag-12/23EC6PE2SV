@@ -17,28 +17,23 @@ module digital_clock(
 
   // Seconds Logic
   always_ff @(posedge clk) begin
-    if (rst) begin
+    if (rst) 
       sec <= 0;
-    end else begin
-      if (sec == 59)
-        sec <= 0;
-      else
-        sec <= sec + 1;
-    end
+    else if (sec == 59)
+      sec <= 0;
+    else
+      sec <= sec + 1;
   end
 
   // Minutes Logic
   always_ff @(posedge clk) begin
     if (rst) begin
       min <= 0;
-    end else begin
-      // Increment minute only when second wraps from 59 to 0
-      if (sec == 59) begin
-        if (min == 59)
-          min <= 0;
-        else
-          min <= min + 1;
-      end
+    end else if (sec == 59) begin
+      if (min == 59)
+        min <= 0;
+      else
+        min <= min + 1;
     end
   end
 
