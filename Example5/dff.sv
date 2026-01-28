@@ -5,7 +5,7 @@
 //Module     : dff
 //Project    : SystemVerilog and Verification (23EC6PE2SV),
 //Faculty    : Prof. Ajaykumar Devarapalli
-//Description: D Flip Flop used for basic sequential coverage example.
+//Description: D Flip Flop used for basic functional coverage example.
 //------------------------------------------------------------------------------
 
 module dff(
