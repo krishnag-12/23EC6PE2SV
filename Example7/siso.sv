@@ -5,7 +5,7 @@
 //Module     : siso
 //Project    : SystemVerilog and Verification (23EC6PE2SV),
 //Faculty    : Prof. Ajaykumar Devarapalli
-//Description: Serial In Serial Out Shift Register used for basic sequential coverage example.
+//Description: Serial In Serial Out Shift Register used for basic functional coverage example.
 //------------------------------------------------------------------------------
 
 module siso(
