@@ -1,1 +1,51 @@
+//------------------------------------------------------------------------------
+//File       : dff.sv
+//Author     : Krishna Gupta/1BM23EC123
+//Created    : 2026-01-24
+//Module     : dff
+//Project    : SystemVerilog and Verification (23EC6PE2SV),
+//Faculty    : Prof. Ajaykumar Devarapalli
+//Description: D Flip Flop used for basic sequential coverage example.
+//------------------------------------------------------------------------------
 
+`timescale 1ns/1ps
+
+class packet;
+  rand bit d, rst;
+  constraint c1 { rst dist {0:=90, 1:=10}; }
+endclass
+
+module tb;
+  logic clk = 0, rst, d, q;
+  dff dut(.*);
+  
+  always #5 clk = ~clk;
+  
+  // Covergroup samples automatically at posedge clk
+  covergroup cg @(posedge clk);
+    cross_rst_d: cross rst, d;
+  endgroup
+  
+  //Declare handles here.
+  cg c_inst;
+  packet pkt;
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+
+    //Instantiate objects procedurally
+    c_inst = new();
+    pkt = new();
+    
+    repeat(100) begin
+      pkt.randomize();
+      rst <= pkt.rst; 
+      d <= pkt.d;
+      @(posedge clk);
+    end
+    
+    $display("Coverage: %0.2f %%", c_inst.get_inst_coverage());
+    $finish;
+  end
+endmodule
