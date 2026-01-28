@@ -29,24 +29,28 @@ module tb;
     cross_wr_full: cross vif.wr, vif.full;
   endgroup
 
-  //Declare handle here.
   cg_fifo cg; 
   
   initial begin
     $dumpfile("dump.vcd");
     $dumpvars;
     
-    //Instantiate object here
+    // 1. Instantiate
     cg = new(); 
     
-    // Initialize
+    // 2. Initialize
     vif.wr = 0; vif.rd = 0;
-    @(posedge clk);
+    @(posedge clk);         
 
-    // Stimulus: Fill the FIFO
+    // 3. Fill the FIFO
     vif.wr = 1; 
-    repeat(18) @(posedge clk);
+    repeat(18) @(posedge clk); 
+    
+    // 4. Stop Writing
     vif.wr = 0;
+    
+    // Wait for the covergroup to see this new state
+    repeat(5) @(posedge clk); 
     
     $display("Coverage: %0.2f %%", cg.get_inst_coverage());
     $finish;
