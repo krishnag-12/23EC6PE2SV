@@ -1,25 +1,25 @@
-module digital_clock (clock_if.dut dif);
+`timescale 1ns/1ps
 
-    always_ff @(posedge dif.clk) begin
-        if (dif.rst) begin
-            dif.seconds <= 0;
-            dif.minutes <= 0;
-        end else begin
-            // Rollover logic for seconds
-            if (dif.seconds == 59) begin
-                dif.seconds <= 0;
-                
-                // Rollover logic for minutes
-                if (dif.minutes == 59) begin
-                    dif.minutes <= 0;
-                end else begin
-                    dif.minutes <= dif.minutes + 1;
-                end
-                
-            end else begin
-                dif.seconds <= dif.seconds + 1;
-            end
-        end
-    end
+module top_tb;
+
+    // Clock
+    logic clk;
+
+    initial clk = 0;
+    always #5 clk = ~clk;   // 10ns period
+
+    // Interface instance
+    clock_if intf(clk);
+
+    // DUT instance
+    digital_clock_rtl dut (
+        .clk     (clk),
+        .rst     (intf.rst),
+        .seconds (intf.seconds),
+        .minutes (intf.minutes)
+    );
+
+    // Program block instance
+    tb_program tb(intf);
 
 endmodule
